@@ -195,6 +195,11 @@ public class MainActivity extends AppCompatActivity {
             timer.cancel();
             timer = null;
 
+            // Show Result
+            Intent intent = new Intent(getApplicationContext(), result.class);
+            intent.putExtra("SCORE", score);
+            startActivity(intent);
+
         }
 
     }
