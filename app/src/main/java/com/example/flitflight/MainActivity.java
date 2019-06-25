@@ -1,10 +1,13 @@
 package com.example.flitflight;
 
+import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,9 +27,17 @@ public class MainActivity extends AppCompatActivity {
     //Size
     private int frameHeight;
     private int boxSize;
+    private int screenWidth;
+    private int screenHeight;
 
     //Position
     private int boxY;
+    private int orangeX;
+    private int orangeY;
+    private int pinkX;
+    private int pinkY;
+    private int blackX;
+    private int blackY;
 
     //Initialize Class
     private Handler handler = new Handler();
@@ -47,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
         orange = (ImageView)findViewById(R.id.orange);
         pink = (ImageView)findViewById(R.id.pink);
         black = (ImageView)findViewById(R.id.black);
+
+        //Get screen size
+        WindowManager wm = getWindowManager();
+        Display disp = wm.getDefaultDisplay();
+        Point size = new Point();
+        disp.getSize(size);
+
+        screenWidth = size.x;
+        screenHeight = size.y;
 
         //Move to out of screen
         orange.setX(-80);
@@ -78,6 +98,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changePos(){
+
+        //Orange
+        orangeX -= 12;
+        if (orangeX < 0) {
+            orangeX = screenWidth + 20;
+            orangeY = (int) Math.floor(Math.random() * (frameHeight - orange.getHeight()));
+        }
+        orange.setX(orangeX);
+        orange.setY(orangeY);
+
+
+        //Black
+        blackX -= 16;
+        if (blackX < 0){
+            blackX = screenWidth + 10;
+            blackY = (int)Math.floor(Math.random() * (frameHeight - black.getHeight()));
+        }
+        black.setX(blackX);
+        black.setY(blackY);
+
+        //Pink
+        pinkX -= 20;
+        if(pinkX < 0){
+            pinkX = screenWidth + 5000;
+            pinkY = (int) Math.floor(Math.random() * (frameHeight - pink.getHeight()));
+        }
+        pink.setX(pinkX);
+        pink.setY(blackY);
 
         //Move Box
         if (action_flg == true){
