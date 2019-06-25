@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="138dp"
-            android:text="Tap to Start"
+            android:text="Let's Begin"
             android:textColor="#FFFFFF"
             android:textSize="30sp" />
 
