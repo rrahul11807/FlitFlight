@@ -1,5 +1,6 @@
 package com.example.flitflight;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private int blackX;
     private int blackY;
 
+    // Score
+    private int score = 0;
+
     //Initialize Class
     private Handler handler = new Handler();
     private Timer timer = new Timer();
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         black.setX(-80);
         black.setY(-80);
 
+        scoreLabel.setText("Score : 0");
+
         //Temporary
         //startLablel.setVisibility(View.INVISIBLE);
         //boxY = 500;
@@ -98,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changePos(){
+
+        hitCheck();
 
         //Orange
         orangeX -= 12;
@@ -142,9 +150,56 @@ public class MainActivity extends AppCompatActivity {
         if(boxY > frameHeight - boxSize)boxY = frameHeight - boxSize;
 
         box.setY(boxY);
+        scoreLabel.setText("Score : " + score);
     }
 
-    public boolean onTouchEvent(MotionEvent me) {
+    public void hitCheck() {
+
+        // If the center of the ball is in the box, it counts as a hit.
+
+        // Orange
+        int orangeCenterX = orangeX + orange.getWidth() / 2;
+        int orangeCenterY = orangeY + orange.getHeight() / 2;
+
+        // 0 <= orangeCenterX <= boxWidth
+        // boxY <= orangeCenterY <= boxY + boxHeight
+
+        if (0 <= orangeCenterX && orangeCenterX <= boxSize &&
+                boxY <= orangeCenterY && orangeCenterY <= boxY + boxSize) {
+
+            score += 10;
+            orangeX = -10;
+        }
+
+        // Pink
+        int pinkCenterX = pinkX + pink.getWidth() / 2;
+        int pinkCenterY = pinkY + pink.getHeight() / 2;
+
+        if (0 <= pinkCenterX && pinkCenterX <= boxSize &&
+                boxY <= pinkCenterY && pinkCenterY <= boxY + boxSize) {
+
+            score += 30;
+            pinkX = -10;
+
+
+        }
+
+        // Black
+        int blackCenterX = blackX + black.getWidth() / 2;
+        int blackCenterY = blackY + black.getHeight() / 2;
+
+        if (0 <= blackCenterX && blackCenterX <= boxSize &&
+                boxY <= blackCenterY && blackCenterY <= boxY + boxSize) {
+
+            // Stop Timer!!
+            timer.cancel();
+            timer = null;
+
+        }
+
+    }
+
+            public boolean onTouchEvent(MotionEvent me) {
 
         if (start_flg == false){
 
@@ -187,8 +242,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
-
 
         return true;
     }
