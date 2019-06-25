@@ -1,11 +1,15 @@
 package com.example.flitflight;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
     //Position
     private int boxY;
+
+    //Initialize Class
+    private Handler handler = new Handler();
+    private Timer timer = new Timer();
+
+    //Status Check
+    private boolean action_flg = false;
+    private boolean start_flg = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +52,76 @@ public class MainActivity extends AppCompatActivity {
         black.setY(-80);
 
         //Temporary
-        startLablel.setVisibility(View.INVISIBLE);
+        //startLablel.setVisibility(View.INVISIBLE);
         boxY = 500;
 
+        /*
+        timer.schedule(new TimerTask() {
 
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        changePos();
+                    }
+                });
+            }
+        },0 , 20);
+        */
+
+    }
+
+    public void changePos(){
+
+        //Move Box
+        if (action_flg == true){
+            //Touching
+            boxY -=20;
+        }else{
+            //Releasing
+            boxY +=20;
+        }
+        box.setY(boxY);
     }
 
     public boolean onTouchEvent(MotionEvent me) {
 
-        if(me.getAction() == MotionEvent.ACTION_DOWN){
-            boxY -= 20;
+        if (start_flg == false){
+
+            start_flg = true;
+
+            startLablel.setVisibility(View.GONE);
+
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            changePos();
+                        }
+                    });
+                }
+            },0 , 20);
+
         }
-        box.setY(boxY);
+        else {
+
+            if (me.getAction() == MotionEvent.ACTION_DOWN)
+            {
+                action_flg = true;
+                //boxY -=20;
+            }
+            else if (me.getAction() == MotionEvent.ACTION_UP)
+            {
+                action_flg = false;
+            }
+
+        }
+
+
 
         return true;
     }
