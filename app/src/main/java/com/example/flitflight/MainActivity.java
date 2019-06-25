@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView orange;
     private ImageView pink;
     private ImageView black;
+
+    //Size
+    private int frameHeight;
+    private int boxSize;
 
     //Position
     private int boxY;
@@ -53,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Temporary
         //startLablel.setVisibility(View.INVISIBLE);
-        boxY = 500;
+        //boxY = 500;
 
         /*
         timer.schedule(new TimerTask() {
@@ -82,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
             //Releasing
             boxY +=20;
         }
+
+        //Check box position
+        if (boxY < 0)boxY = 0;
+
+        if(boxY > frameHeight - boxSize)boxY = frameHeight - boxSize;
+
         box.setY(boxY);
     }
 
@@ -90,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
         if (start_flg == false){
 
             start_flg = true;
+
+            FrameLayout frame = (FrameLayout) findViewById(R.id.frame);
+            frameHeight = frame.getHeight();
+
+            boxY = (int)box.getY();
+
+            // The box is a square(height and width are the same)
+            boxSize = box.getHeight();
 
             startLablel.setVisibility(View.GONE);
 
